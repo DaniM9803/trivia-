@@ -28,16 +28,21 @@ body {
 .form-home {
     margin: 5rem auto 0 auto;
     width: fit-content;
-    background: rgba(255, 255, 255, 0.9);
+    background: linear-gradient(
+        135deg,
+        rgba(147, 197, 253, 0.8) 0%,
+        rgba(186, 230, 253, 0.9) 50%,
+        rgba(147, 197, 253, 0.8) 100%
+    );
     padding: 2rem;
     border-radius: 10px;
     max-width: 90%;
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
     box-shadow: 
-        0 4px 6px rgba(0,0,0,0.1),
-        inset 0 0 20px rgba(255, 255, 255, 0.5),
-        inset 0 0 20px rgba(255, 255, 255, 0.2);
+        0 4px 15px rgba(0, 0, 0, 0.1),
+        inset 0 0 30px rgba(255, 255, 255, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
 }
@@ -52,13 +57,13 @@ body {
     background: linear-gradient(
         45deg,
         transparent 0%,
-        rgba(255, 255, 255, 0.1) 45%,
-        rgba(255, 255, 255, 0.2) 50%,
-        rgba(255, 255, 255, 0.1) 55%,
+        rgba(255, 255, 255, 0.4) 45%,
+        rgba(255, 255, 255, 0.7) 50%,
+        rgba(255, 255, 255, 0.4) 55%,
         transparent 100%
     );
     transform: rotate(30deg);
-    animation: shine 6s infinite;
+    animation: shine 4s infinite;
 }
 
 @keyframes shine {
@@ -79,15 +84,17 @@ body {
 
 /* Form inputs */
 .form-control {
-    border: 2px solid #e9ecef;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 255, 255, 0.6);
     border-radius: 6px;
     padding: 0.75rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .form-control:focus {
-    border-color: #2c3e50;
-    box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+    background: white;
+    border-color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
 }
 
 /* Buttons */
