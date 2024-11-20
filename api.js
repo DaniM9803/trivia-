@@ -1,23 +1,21 @@
+const BASE_URL = 'https://opentdb.com/api.php';
 
-export const getCategories = async () => {
-    const result = await fetch("https://opentdb.com/api_category.php");
-    const data = await result.json();
-    return data;
-}
+export async function fetchQuestions(amount, category, difficulty) {
+    try {
+        let url = `${BASE_URL}?amount=${amount}`;
+        if (category) url += `&category=${category}`;
+        if (difficulty) url += `&difficulty=${difficulty}`;
 
-export const resetToken = async (storedToken) => {
-    await fetch(`https://opentdb.com/api_token.php?command=reset&token=${storedToken}`); 
-}
+        const response = await fetch(url);
+        const data = await response.json();
 
-
-export const requestToken = async () => {
-    const result = await fetch('https://opentdb.com/api_token.php?command=request');
-    const data = await result.json();
-    return data;
-}
-
-export const getQuestions = async (params) => {
-    const result = await fetch(`https://opentdb.com/api.php?${params}`);
-    const data = await result.json();
-    return data;
+        if (data.response_code === 0) {
+            return data.results;
+        } else {
+            throw new Error('Failed to fetch questions');
+        }
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+        throw error;
+    }
 }

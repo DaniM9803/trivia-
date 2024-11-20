@@ -1,94 +1,70 @@
-import { formShape } from "../data.js";
-import { getCategories, requestToken, resetToken } from "../api.js";
-import { navigate } from "../router.js";
-import quiz from "./quiz.js";
+export function HomePage() {
+    const container = document.createElement('div');
+    container.innerHTML = `
+        <form class="form-home">
+            <div class="form-input-container">
+                <label for="amount" class="form-label text-white">Number of Questions:</label>
+                <input type="number" class="form-control" id="amount" min="1" max="50" value="10" required>
+            </div>
+            
+            <div class="form-input-container">
+                <label for="category" class="form-label text-white">Category:</label>
+                <select class="form-control" id="category">
+                    <option value="">Any Category</option>
+                    <option value="9">General Knowledge</option>
+                    <option value="10">Entertainment: Books</option>
+                    <option value="11">Entertainment: Film</option>
+                    <option value="12">Entertainment: Music</option>
+                    <option value="13">Entertainment: Musicals & Theatres</option>
+                    <option value="14">Entertainment: Television</option>
+                    <option value="15">Entertainment: Video Games</option>
+                    <option value="16">Entertainment: Board Games</option>
+                    <option value="17">Science & Nature</option>
+                    <option value="18">Science: Computers</option>
+                    <option value="19">Science: Mathematics</option>
+                    <option value="20">Mythology</option>
+                    <option value="21">Sports</option>
+                    <option value="22">Geography</option>
+                    <option value="23">History</option>
+                    <option value="24">Politics</option>
+                    <option value="25">Art</option>
+                    <option value="26">Celebrities</option>
+                    <option value="27">Animals</option>
+                    <option value="28">Vehicles</option>
+                    <option value="29">Entertainment: Comics</option>
+                    <option value="30">Science: Gadgets</option>
+                    <option value="31">Entertainment: Japanese Anime & Manga</option>
+                    <option value="32">Entertainment: Cartoon & Animations</option>
+                </select>
+            </div>
+            
+            <div class="form-input-container">
+                <label for="difficulty" class="form-label text-white">Difficulty:</label>
+                <select class="form-control" id="difficulty">
+                    <option value="">Any Difficulty</option>
+                    <option value="easy">Easy</option>
+                    <option value="medium">Medium</option>
+                    <option value="hard">Hard</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn btn-primary w-100">Start Quiz</button>
+        </form>
+    `;
 
-
-const app = document.getElementById("app");
-
-const home = async () => {
-    app.innerHTML = "";
-    const buildForm = (shape, handler, liveValidator) => {
-        const formElem = document.createElement("form");
-        formElem.addEventListener("submit", handler);
-        formElem.className = "form-home";
-    
-        shape.forEach(elem => {
-            if(elem.inputType === "text"){
-                const input = document.createElement("div");
-                input.className = "form-input-container";
-                input.innerHTML = `
-                    <label>${elem.label}</label>
-                    <input class=${elem.className} type="text" placeholder=${elem?.placeholder || ""}>
-                `
-                const textInput = input.querySelector('input');
-                textInput.addEventListener("input", liveValidator);
-                formElem.append(input);
-            }
-            else if(elem.inputType === "select"){
-                const input = document.createElement("div");
-                input.className = "form-input-container"
-                input.innerHTML = `
-                    <label>${elem.label}</label>
-                    <select class=${elem.className}>
-                        ${elem.options.map(opt => {
-                            return `<option value=${opt.value}>${opt.label}</option>`
-                        })}
-                    </select>
-                `
-                const selectInput = input.querySelector("select");
-                selectInput.addEventListener("change", liveValidator);
-                formElem.append(input);
-            }
-        })
-        const submitBtn = document.createElement("button");
-        submitBtn.className = "btn btn-primary mt-5";
-        submitBtn.type = "submit";
-        submitBtn.innerText = "Start Quiz";
-        submitBtn.disabled = true;
-        formElem.append(submitBtn);
-        return formElem;
-    }
-    
-    const submitHandler = (e) => {
+    const form = container.querySelector('form');
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = e.target[0].value;
-        const amount = e.target[1].value;
-        const difficulty = e.target[2].value;
-        const type = e.target[3].value;
-        const category = e.target[4].value;
-        navigate(`/quiz?name=${name}&amount=${amount}&difficulty=${difficulty}&type=${type}&category=${category}`);
-        /////Create a popstate type event and dispatch it
-        const event = new Event("popstate");
-        window.dispatchEvent(event);
-    }
-    
-    const liveValidation = (event) => {
-        const submitBtn = document.querySelector('form>button[type="submit"]');
-        const value = event.target.value;
-        const rgx = /^[A-Za-z]+$/;
-        if(event.target.type === "text"){
-            submitBtn.disabled = (value === "" || !rgx.test(value));
+        const amount = document.getElementById('amount').value;
+        const category = document.getElementById('category').value;
+        const difficulty = document.getElementById('difficulty').value;
+
+        try {
+            window.location.hash = `#/quiz?amount=${amount}&category=${category}&difficulty=${difficulty}`;
+        } catch (error) {
+            alert('Error starting quiz. Please try again.');
         }
-        
-    }
+    });
 
-    try{
-        const res = await getCategories();
-        const categories = res.trivia_categories.map(catObj => ({value: catObj.id, label: catObj.name}));
-        window.categories = res.trivia_categories;
-        const categoryInputObj = formShape.find(elem => elem.label === "Select Category");
-        categoryInputObj.options = [{value: "Any", label: "Any"}, ...categories];
-        const form = buildForm(formShape, submitHandler, liveValidation);
-        app.append(form);
-        const storedToken = localStorage.getItem("token");
-        await resetToken(storedToken);
-        const newTokenObj = await requestToken();
-        localStorage.setItem("token", newTokenObj.token);
-    }
-    catch(error){
-        console.log(error)
-    }
+    return container;
 }
-
-export default home;
