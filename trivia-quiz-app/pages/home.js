@@ -56,7 +56,7 @@ const home = async () => {
         const type = e.target[3].value;
         const category = e.target[4].value;
         navigate(`/quiz?name=${name}&amount=${amount}&difficulty=${difficulty}&type=${type}&category=${category}`);
-        /////Create a popstate type event and dispatch it
+       
         const event = new Event("popstate");
         window.dispatchEvent(event);
     }
@@ -73,8 +73,7 @@ const home = async () => {
     try{
         const res = await getCategories();
         const categories = res.trivia_categories.map(catObj => ({value: catObj.id, label: catObj.name}));
-        //TODO check and remove if not in use
-        //window.categories = res.trivia_categories;
+        
         const categoryInputObj = formShape.find(elem => elem.label === "Select Category");
         categoryInputObj.options = [{value: "Any", label: "Any"}, ...categories];
         const form = buildForm(formShape, submitHandler, liveValidation);

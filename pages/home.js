@@ -1,70 +1,69 @@
 export function HomePage() {
+   
+    const categories = [
+        { id: 9, icon: '🌍', name: 'General Knowledge' },
+        { id: 10, icon: '📚', name: 'Books' },
+        { id: 11, icon: '🎬', name: 'Film' },
+        { id: 12, icon: '🎵', name: 'Music' },
+        { id: 13, icon: '🎭', name: 'Theatre' },
+        { id: 14, icon: '📺', name: 'Television' },
+        { id: 15, icon: '🎮', name: 'Video Games' },
+        { id: 16, icon: '🎲', name: 'Board Games' },
+        { id: 17, icon: '🔬', name: 'Science & Nature' },
+        { id: 18, icon: '💻', name: 'Computers' },
+        { id: 19, icon: '🧮', name: 'Mathematics' },
+        { id: 20, icon: '🏛️', name: 'Mythology' },
+        { id: 21, icon: '🏃', name: 'Sports' },
+        { id: 22, icon: '🌍', name: 'Geography' },
+        { id: 23, icon: '📜', name: 'History' },
+        { id: 24, icon: '🏛️', name: 'Politics' },
+        { id: 25, icon: '🎨', name: 'Art' },
+        { id: 26, icon: '👥', name: 'Celebrities' },
+        { id: 27, icon: '🐾', name: 'Animals' },
+        { id: 28, icon: '🚗', name: 'Vehicles' },
+        { id: 29, icon: '📚', name: 'Comics' },
+        { id: 30, icon: '🧪', name: 'Science: Gadgets' },
+        { id: 31, icon: '🎌', name: 'Anime & Manga' },
+        { id: 32, icon: '🎨', name: 'Cartoon & Animation' }
+    ];
+
     const container = document.createElement('div');
+    container.className = 'home-container';
+
     container.innerHTML = `
-        <form class="form-home">
-            <div class="form-input-container">
-                <label for="amount" class="form-label text-white">Number of Questions:</label>
-                <input type="number" class="form-control" id="amount" min="1" max="50" value="10" required>
+        <div class="welcome-section">
+            <h1 class="welcome-title">Welcome to TriviaMaster!
+            <p class="welcome-text">Challenge yourself with our exciting quizzes and earn coins for every correct answer!</p>
+        </div>
+
+        <div class="categories-section">
+            <h2 class="categories-title">Quiz Categories</h2>
+            <div class="categories-grid">
+                ${categories.map(cat => `
+                    <div class="category-card" onclick="window.location.hash='#/quiz?category=${cat.id}&amount=10'">
+                        <span class="category-icon">${cat.icon}</span>
+                        <h3 class="category-name">${cat.name}</h3>
+                    </div>
+                `).join('')}
             </div>
-            
-            <div class="form-input-container">
-                <label for="category" class="form-label text-white">Category:</label>
-                <select class="form-control" id="category">
-                    <option value="">Any Category</option>
-                    <option value="9">General Knowledge</option>
-                    <option value="10">Entertainment: Books</option>
-                    <option value="11">Entertainment: Film</option>
-                    <option value="12">Entertainment: Music</option>
-                    <option value="13">Entertainment: Musicals & Theatres</option>
-                    <option value="14">Entertainment: Television</option>
-                    <option value="15">Entertainment: Video Games</option>
-                    <option value="16">Entertainment: Board Games</option>
-                    <option value="17">Science & Nature</option>
-                    <option value="18">Science: Computers</option>
-                    <option value="19">Science: Mathematics</option>
-                    <option value="20">Mythology</option>
-                    <option value="21">Sports</option>
-                    <option value="22">Geography</option>
-                    <option value="23">History</option>
-                    <option value="24">Politics</option>
-                    <option value="25">Art</option>
-                    <option value="26">Celebrities</option>
-                    <option value="27">Animals</option>
-                    <option value="28">Vehicles</option>
-                    <option value="29">Entertainment: Comics</option>
-                    <option value="30">Science: Gadgets</option>
-                    <option value="31">Entertainment: Japanese Anime & Manga</option>
-                    <option value="32">Entertainment: Cartoon & Animations</option>
-                </select>
+        </div>
+
+        <div class="stats-section mt-5 text-center text-white">
+            <h2>Your Stats</h2>
+            <div class="stats-grid mt-4">
+                <div class="stat-card">
+                    <span class="stat-icon">🪙</span>
+                    <div class="stat-value">${localStorage.getItem('quizCoins') || 0}</div>
+                    <div class="stat-label">Total Coins</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🏆</span>
+                    <div class="stat-value">${localStorage.getItem('gamesPlayed') || 0}</div>
+                    <div class="stat-label">Games Played</div>
+                </div>
             </div>
-            
-            <div class="form-input-container">
-                <label for="difficulty" class="form-label text-white">Difficulty:</label>
-                <select class="form-control" id="difficulty">
-                    <option value="">Any Difficulty</option>
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                </select>
-            </div>
-            
-            <button type="submit" class="btn btn-primary w-100">Start Quiz</button>
-        </form>
+        </div>
     `;
-
-    const form = container.querySelector('form');
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const amount = document.getElementById('amount').value;
-        const category = document.getElementById('category').value;
-        const difficulty = document.getElementById('difficulty').value;
-
-        try {
-            window.location.hash = `#/quiz?amount=${amount}&category=${category}&difficulty=${difficulty}`;
-        } catch (error) {
-            alert('Error starting quiz. Please try again.');
-        }
-    });
 
     return container;
 }

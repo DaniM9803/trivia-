@@ -26,7 +26,7 @@ window.addEventListener("load", async () => {
 
     window.addEventListener("show-modal-event", () => {
         console.log("show-modal-event", window.modal)
-        // const modal = mainModal._element; //poate fi si asa
+        
         const modal = document.getElementById("mainModal");
         const modalTitle = modal.querySelector(".modal-title");
         const modalBody = modal.querySelector(".modal-body");

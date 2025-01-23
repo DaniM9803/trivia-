@@ -1,25 +1,22 @@
-import { IndexPage } from './pages/index.js';
 import { HomePage } from './pages/home.js';
 import { QuizPage } from './pages/quiz.js';
-
-const routes = {
-    '/': IndexPage,
-    '/home': HomePage,
-    '/quiz': QuizPage
-};
+import { LeaderboardPage } from './pages/leaderboard.js';
+import { ProfilePage } from './pages/profile.js';
 
 export function router() {
-    const app = document.getElementById('app');
-    let hash = window.location.hash.slice(1) || '/';
-    const [path, params] = hash.split('?');
-    
-    const page = routes[path];
-    if (page) {
-        app.innerHTML = '';
-        Promise.resolve(page(params)).then(component => {
-            app.appendChild(component);
-        });
-    } else {
-        window.location.hash = '#/';
+    const app = document.querySelector('#app');
+    const hash = window.location.hash || '#/';
+
+    app.innerHTML = '';
+
+    if (hash === '#/') {
+        app.appendChild(HomePage());
+    } else if (hash.startsWith('#/quiz')) {
+        const params = hash.includes('?') ? hash.slice(hash.indexOf('?')) : '';
+        QuizPage(params).then(component => app.appendChild(component));
+    } else if (hash === '#/leaderboard') {
+        app.appendChild(LeaderboardPage());
+    } else if (hash === '#/profile') {
+        app.appendChild(ProfilePage());
     }
 }

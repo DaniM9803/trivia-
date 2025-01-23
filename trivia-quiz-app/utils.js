@@ -1,5 +1,5 @@
 
-//TODO use another solution instead of forEach
+
 const formatQueryParams = (paramsObj) => `?${Object.keys(paramsObj).map((k) => `${k}=${paramsObj[k]}`).join("&")}`;
 
 
@@ -23,12 +23,4 @@ export const fisherYatesShuffle = (arr) => {
     }
     return newArr
   }
-
-// const key = "name";
-// const person = {
-//     "full name": "Cristi",
-//     age: 18,
-//     ocupation: "Engineer"
-// }
-// console.log(person["full name"])
 
